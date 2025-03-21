@@ -20,3 +20,5 @@ if st.button("Predict Risk"):
 # ونحط تحت الشرط اللوجيك اللي طلع بعد تعليم الداتا ماشي يا فوزي انت وهو 
     # Display the result
     st.success(f"Prediction Result: {risk}")
+    
+#### streamlit run ui/app.py ----->  paste it in terminal to run 
