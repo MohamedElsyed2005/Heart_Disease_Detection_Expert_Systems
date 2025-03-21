@@ -1,24 +1,32 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import joblib
+import os
 
-st.title("Heart Disease Detection System")
+model_path = os.path.abspath("ml_model/decision_tree_model.pkl")
+model = joblib.load(model_path)
+
+scaler_path = os.path.abspath("utils/preprocessing_pipeline.pkl")
+scaler = joblib.load(scaler_path)  # preprocessing pipeline
+
+feature_names = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg',
+                 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
 
 
-st.write("""
-This application predicts the risk of heart disease based on the health indicators you input.
-""")
+st.title("Heart disease")
 
-# User input 
-age = st.slider("Age", 20, 100, 30)
-blood_pressure = st.slider("Blood Pressure (mmHg)", 80, 200, 120)
-cholesterol = st.slider("Cholesterol (mg/dL)", 100, 400, 200)
-smoking = st.radio("Do you smoke?", ("Yes", "No"))
-exercise = st.radio("Do you exercise regularly?", ("Yes", "No"))
 
-# Button for prediction
-if st.button("Predict Risk"):
-# المفروض ندخلها في test 
-# ونحط تحت الشرط اللوجيك اللي طلع بعد تعليم الداتا ماشي يا فوزي انت وهو 
-    # Display the result
-    st.success(f"Prediction Result: {risk}")
-    
-#### streamlit run ui/app.py ----->  paste it in terminal to run 
+user_input = {}
+for feature in feature_names:
+    user_input[feature] = st.number_input(f"Enter the value of {feature}:", min_value=0.0, step=0.1)
+
+user_df = pd.DataFrame([user_input])
+
+user_df_scaled = scaler.transform(user_df)
+
+
+if st.button("predict"):
+    prediction = model.predict(user_df_scaled)  
+    result = "Disease heart : " if prediction[0] == 1 else "✅ Good"
+    st.subheader(f"Result: {result}")

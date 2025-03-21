@@ -5,7 +5,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint
 import joblib
 
-df = pd.read_csv(r"..\data\heart.csv")
+df = pd.read_csv(r"..\data\train_cleaned.csv")
 
 X = df.drop(columns=['target'])
 y = df['target']

@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.compose import make_column_transformer
 from sklearn.pipeline import make_pipeline
+import joblib
 
 def preprocessing_pipeline(file_path, train_output, test_output):
     
@@ -34,7 +35,8 @@ def preprocessing_pipeline(file_path, train_output, test_output):
 
     train_cleaned_df['target'] = train_data['target'].values
     test_cleaned_df['target'] = test_data['target'].values
-
+    
+    joblib.dump(preprocessing, "preprocessing_pipeline.pkl")
     train_cleaned_df.to_csv(train_output, index=False, encoding="utf-8")
     test_cleaned_df.to_csv(test_output, index=False, encoding="utf-8")
 
