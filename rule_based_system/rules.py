@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, "./ui")
 from experta import KnowledgeEngine, Rule, Fact, P
 
 class Heart_Expert(KnowledgeEngine):

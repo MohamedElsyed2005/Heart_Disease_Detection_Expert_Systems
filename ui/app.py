@@ -2,9 +2,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-import sys
 import os
+import sys
+sys.path.insert(0, "./ui")
 from experta import Fact
+from frozendict import frozendict
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from rule_based_system.rules import Heart_Expert
