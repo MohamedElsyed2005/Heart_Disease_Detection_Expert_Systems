@@ -4,4 +4,4 @@ numpy
 joblib
 scikit-learn
 experta==1.9.4
-frozendict==2.3.8  # Ensure compatibility
+frozendict==1.2  # Fixed the dependency conflict
