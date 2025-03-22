@@ -4,3 +4,4 @@ numpy
 scikit-learn
 joblib
 experta
+frozendict==2.3.8  # Ensure compatibility
