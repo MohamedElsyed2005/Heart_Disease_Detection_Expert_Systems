@@ -1,4 +1,6 @@
 from rules import Heart_Expert
+import sys
+sys.path.insert(0, "./ui")
 from experta import Fact
 import pandas as pd
 
