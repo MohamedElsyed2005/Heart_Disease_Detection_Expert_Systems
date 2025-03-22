@@ -5,6 +5,8 @@ import joblib
 import sys
 import os
 from experta import Fact
+from frozendict import frozendict
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from rule_based_system.rules import Heart_Expert
