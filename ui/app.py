@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import sys
 import os
+from experta import Fact
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from rule_based_system.rules import Heart_Expert
 
 model_path = os.path.abspath("ml_model/decision_tree_model.pkl")
 model = joblib.load(model_path)
@@ -41,19 +45,36 @@ exang = 1 if exang == "Yes" else 0
 user_data = pd.DataFrame([[age, sex, cp, trestbps, chol, fbs, restecg, thalach,
                         exang, oldpeak, slope, ca, thal]], columns=feature_names)
 
-# Normalization with scaler
-## بالاصح بيحل مشكلة التقسيمة بس برضوا مش فاهم ازاي
-user_data_scaled = scaler.transform(user_data)
+#### streamlit run ui/app.py ----->  paste it in terminal to run 
+def predict_decision_tree(data):
+    # Normalization with scaler
+    ## بالاصح بيحل مشكلة التقسيمة بس برضوا مش فاهم ازاي
+    user_data_scaled = scaler.transform(user_data)
+    prediction = model.predict(user_data_scaled)
+    return prediction
+
 
 # Button for prediction
-if st.button("Predict Risk"):
-    prediction = model.predict(user_data_scaled)
-    
+if st.button("Predict Using Decision tree"):
+    prediction = predict_decision_tree(user_data)
     if prediction[0] == 1:
         st.error("⚠️ High Risk of Heart Disease")
     else:
         st.success("✅ Low Risk of Heart Disease")
-
-
-
-#### streamlit run ui/app.py ----->  paste it in terminal to run 
+    
+elif st.button("Predict Using Expert System"):
+    engine = Heart_Expert()
+    engine.reset()
+    
+    user_data_dict = user_data.to_dict(orient="records")[0]
+    for key, value in user_data_dict.items():
+        engine.declare(Fact(**{key: value}))
+    
+    engine.run()
+    
+    # Display warnings from the expert system
+    if engine.messages:
+        for msg in engine.messages:
+            st.warning(msg)  # Displays warnings in Streamlit
+    else:
+        st.success("✅ No significant heart disease risk detected based on rules.")
